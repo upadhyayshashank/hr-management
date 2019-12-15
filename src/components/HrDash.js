@@ -4,6 +4,11 @@ import {withStyles} from '@material-ui/core/styles'
 import Projects from './Projects'
 import Employees from './Employees'
 import LeaveRequest from './LeaveRequest'
+import EquipmentTable from './EquipmentTable'
+import PerformanceTable from './PerformanceTable'
+import SalaryTable from './SalaryTable'
+import WorkHistory from './WorkHistory'
+import Holidays from './Holidays'
 const styles = theme => ({
   container: {
 
@@ -20,6 +25,16 @@ class HrDash extends React.Component {
         <Employees/>
 
         <LeaveRequest/>
+
+        <EquipmentTable/>
+
+        <Holidays/>
+
+        <PerformanceTable/>
+
+        <SalaryTable/>
+
+        <WorkHistory/>
       </div>
     )
   }

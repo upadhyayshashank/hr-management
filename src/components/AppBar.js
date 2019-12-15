@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: 10
   },
-  
+
 }));
 
 function Header(props) {
@@ -85,6 +85,26 @@ function Header(props) {
         <ListItem button>
           <ListItemIcon></ListItemIcon>
           <a href='#employeeTable'><ListItemText primary={'Employee'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#salaryTable'><ListItemText primary={'Salaries'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#performanceTable'><ListItemText primary={'Performance Review'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#holidays'><ListItemText primary={'Holidays'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#equipmentTable'><ListItemText primary={'Equipment Details'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#workHistory'><ListItemText primary={'Work History'} /></a>
         </ListItem>
       </List>
     </div>

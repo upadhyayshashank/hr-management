@@ -29,8 +29,8 @@ const useStyles = makeStyles(theme => ({
   },
   addButton: {
     position: 'absolute',
-    right: 20,
-    margin: 10,
+    right: 270,
+    marginTop: 25,
     zIndex: 1
   },
   form: {

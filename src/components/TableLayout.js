@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
+import TextField from '@material-ui/core/TextField';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -99,6 +100,11 @@ const useToolbarStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
   },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    float: 'right'
+  },
   highlight:
     theme.palette.type === 'light'
       ? {
@@ -134,6 +140,14 @@ const EnhancedTableToolbar = props => {
           {
             props.addButton ? props.addButton : null
           }
+          <TextField
+            variant='outlined'
+            id="standard-search"
+            label="Search field"
+            type="search"
+            className={classes.textField}
+            margin="normal"
+            />
         </Typography>
       )}
     </Toolbar>
