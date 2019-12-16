@@ -66,16 +66,6 @@ class SalaryTable extends React.Component {
     }
   }
 
-  updatedEmp = (body) => {
-    let index = this.state.rows.findIndex(elem => {
-      return elem.personId == body.personId
-    })
-    let updatedList = this.state.rows
-    updatedList[index] = body
-    this.setState({
-      rows: updatedList
-    })
-  }
 
   render() {
     return(

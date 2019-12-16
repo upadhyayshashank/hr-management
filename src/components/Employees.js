@@ -92,11 +92,22 @@ class Employees extends React.Component {
     })
   }
 
+  updatedEmp = (body) => {
+    let index = this.state.rows.findIndex(elem => {
+      return elem.personId == body.personId
+    })
+    let updatedList = this.state.rows
+    updatedList[index] = body
+    this.setState({
+      rows: updatedList
+    })
+  }
+
   render() {
     return(
       <div id='employeeTable'>
         <AddEmp/>
-        <TableLayout deleteEmp={this.deleteEmp} searchEmp={this.searchEmp} tableName='Employees' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
+        <TableLayout updateEmp={this.updateEmp} deleteEmp={this.deleteEmp} searchEmp={this.searchEmp} tableName='Employees' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }
