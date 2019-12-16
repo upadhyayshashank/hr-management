@@ -18,9 +18,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit'
+import {withStyles} from '@material-ui/core/styles'
+import axios from 'axios'
 
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   appBar: {
     position: 'relative',
   },
@@ -40,55 +42,81 @@ const useStyles = makeStyles(theme => ({
       minWidth: 250
     },
   },
-}));
+});
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddEmp() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
+class EditEmp extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state={
+      open: false,
+      firstName: props.emp.firstName,
+      lastName: props.emp.lastName,
+      personId: props.emp.personId,
+      phoneNumber: props.emp.phoneNumber,
+      email: props.emp.emailID,
+      dob: props.emp.dob,
+      address: props.emp.address,
+    }
+  }
+  handleClickOpen = () => {
+    this.setState({open: true})
+  };
+  handleClose = () => {
+    this.setState({open: false})
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  editEmp = () => {
+    const {firstName, lastName, phoneNumber, email, address, personId} = this.state
+    if(firstName === '' || lastName == '' || address == '' || email == '') {
+      this.setState({error: 'Fields must not be empty'})
+    } else {
+      axios.put('http://localhost:4000/employeesUpdate', {
+        firstName, lastName, phoneNumber, address, email, personId
+      }).then(res => {
+        this.props.updateEmp({firstName, lastName, phoneNumber, address, email})
+        this.setState({open: false})
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+  }
 
-  return (
-    <div>
-      <IconButton variant='contained' onClick={handleClickOpen}>
-        <EditIcon/>
-      </IconButton>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add Employee</DialogTitle>
-        <DialogContent>
-          <form className={classes.form} autoComplete="off">
-            <TextField id="firstName" label="First Name" variant="outlined" />
-            <TextField id="lastName" label="Last Name" variant="outlined" />
-            <TextField id="phoneNumber" label="Phone Number" variant="outlined" />
-            <TextField id="emailId" type='email' label="Email Id" variant="outlined" />
-            <TextField id="dob" value={new Date()} type='date' label="DOB" variant="outlined" />
-            <br/>
-            <TextField multiline rows={3} fullWidth id="address" label="Address" variant="outlined" />
-            <TextField id="gender" label="Gender" variant="outlined" />
-            <TextField id="departmentName" label="Department Name" variant="outlined" />
-            <TextField id="role" label="Role" variant="outlined" />
-            <TextField id="hireDate" label="Hire Date" variant="outlined" />
-          </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+  render() {
+    const {classes} = this.props
+    return (
+      <div>
+        <IconButton variant='contained' onClick={this.handleClickOpen}>
+          <EditIcon/>
+        </IconButton>
+        <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Add Employee</DialogTitle>
+          <DialogContent>
+            <form className={classes.form} onSubmit={this.editEmp} autoComplete="off">
+              <TextField value={this.state.firstName} onChange={(event) => {this.setState({firstName: event.target.value})}} name='firstName' id="firstName" label="First Name" variant="outlined" />
+              <TextField value={this.state.lastName} onChange={(event) => {this.setState({lastName: event.target.value})}} id="lastName" label="Last Name" variant="outlined" />
+              <TextField value={this.state.phoneNumber} onChange={(event) => {this.setState({phoneNumber: event.target.value})}} id="phoneNumber" label="Phone Number" variant="outlined" />
+              <TextField value={this.state.email} onChange={(event) => {this.setState({email: event.target.value})}} id="emailId" type='email' label="Email Id" variant="outlined" />
+              <TextField disabled value={this.state.dob} id="dob" value={new Date()} type='date' label="DOB" variant="outlined" />
+              <br/>
+              <TextField value={this.state.address} onChange={(event) => {this.setState({address: event.target.value})}} multiline rows={3} fullWidth id="address" label="Address" variant="outlined" />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button type='submit' onClick={this.editEmp} color="primary">
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
 }
+
+export default withStyles(styles)(EditEmp)

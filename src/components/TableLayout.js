@@ -292,7 +292,7 @@ export default function TableLayout(props) {
                         })
                       }
                       {
-                        props.tableName==='Employees'?<TableCell style={{display: 'flex'}} align='right'><EditEmp emp={row}/> <DeleteEmp deleteEmp={props.deleteEmp} empId={row.personId}/></TableCell>:null
+                        props.tableName==='Employees'?<TableCell style={{display: 'flex'}} align='right'><EditEmp emp={row} updateEmp={props.updateEmp}/> <DeleteEmp deleteEmp={props.deleteEmp} empId={row.personId}/></TableCell>:null
                       }
                       {
                         props.tableName==='Leave Requests'?<TableCell style={{display: 'flex'}} align='right'><AcceptLeave/> <RejectLeave/></TableCell>:null

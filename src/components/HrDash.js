@@ -20,11 +20,7 @@ class HrDash extends React.Component {
     const {classes} = this.props
     return (
       <div className={classes.container}>
-        <Projects/>
-
         <Employees/>
-
-        <LeaveRequest/>
 
         <EquipmentTable/>
 
@@ -35,6 +31,11 @@ class HrDash extends React.Component {
         <SalaryTable/>
 
         <WorkHistory/>
+
+        <Projects/>
+
+        <LeaveRequest/>
+
       </div>
     )
   }
