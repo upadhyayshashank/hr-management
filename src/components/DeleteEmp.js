@@ -47,7 +47,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function DeleteEmp() {
+export default function DeleteEmp(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -58,6 +58,11 @@ export default function DeleteEmp() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const deleteEmp = () => {
+    setOpen(false)
+    props.deleteEmp(props.empId)
+  }
 
   return (
     <div>
@@ -75,7 +80,7 @@ export default function DeleteEmp() {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} style={{color: 'red'}}>
+          <Button onClick={deleteEmp} style={{color: 'red'}}>
             Delete
           </Button>
         </DialogActions>

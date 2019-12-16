@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types'
 import AddEmp from './AddEmp'
 import TableLayout from './TableLayout'
+import axios from 'axios'
 
 function createData(personId, firstName, lastName, emailID, phoneNumber,dob,departmentId,employeeAddress,gender,role,hireDate,reportingpersonId,projectID) {
   return { personId, firstName, lastName, emailID, phoneNumber,dob,departmentId,employeeAddress,gender,role,hireDate,reportingpersonId,projectID };
@@ -26,8 +27,14 @@ const headCells = [
 
 class Employees extends React.Component {
 
-  state={
-    rows: []
+  constructor(props) {
+    super(props)
+    this.state={
+      rows: [],
+      empRes: [],
+      searchRes: []
+    }
+    this.searchEmp = this.searchEmp.bind(this)
   }
 
   addEmpButton = () => {
@@ -35,22 +42,61 @@ class Employees extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      rows: [
-        createData(1, 'shekhar', 'bhattacharya', 'asdfsaf@sd.df', 12312312312, '15th February 1993', 121, 'mannheim', 'male', 'manager', '15th December 2018', 3, 55),
-        createData(2, 'shashank', 'upadhyay', 'asdfsaf@sd.df', 12312312312, '15th February 1993', 121, 'mannheim', 'male', 'manager', '15th December 2018', 3, 55)
-      ]
+
+    axios.get('http://localhost:4000/employees').then(res => {
+      let tempRows=[]
+      res.data.data.map(elem => {
+        tempRows.push(createData(elem.Person_ID, elem.F_Name, elem.L_Name, elem.Email, elem.Phone_Number, elem.Date_Of_Birth, elem.Department_ID, elem.Employee_Address, elem.Gender, elem.Role_ID, elem.Hire_Date, elem.Reporting_Person_ID, elem.Project_ID, elem.Person_Type))
+      })
+      this.setState({
+        rows: tempRows,
+        empRes: res.data.data
+      })
+    }).catch(err => {
+      console.log(err);
     })
     console.log(this.state.rows);
+  }
+
+  searchEmp = (event) => {
+    console.log('search: ', event.target.value);
+    if(event.target.value.length > 0) {
+      let selectedEmp = this.state.rows.find(elem => {return elem.personId == event.target.value})
+      if(selectedEmp != undefined) this.setState({
+        searchRes: [selectedEmp],
+        rows: []
+      })
+      console.log(this.state.rows, selectedEmp);
+    } else {
+      let tempRows=[]
+      this.state.empRes.map(elem => {
+        tempRows.push(createData(elem.Person_ID, elem.F_Name, elem.L_Name, elem.Email, elem.Phone_Number, elem.Date_Of_Birth, elem.Department_ID, elem.Employee_Address, elem.Gender, elem.Role_ID, elem.Hire_Date, elem.Reporting_Person_ID, elem.Project_ID, elem.Person_Type))
+      })
+      this.setState({
+        rows: tempRows,
+        searchRes: []
+      })
+    }
+  }
+
+  deleteEmp = (empId) => {
+    axios.delete('http://localhost:4000/employees/'+empId).then(res => {
+      let tempRows = this.state.rows.filter(elem => {
+        return elem.personId != empId
+      })
+      this.setState({
+        rows: tempRows
+      })
+    }).catch(err => {
+      console.log(err);
+    })
   }
 
   render() {
     return(
       <div id='employeeTable'>
         <AddEmp/>
-        {
-          this.state.rows.length > 0 ? <TableLayout tableName='Employees' rows={this.state.rows} headCells={headCells}/> : <p>loading...</p>
-        }
+        <TableLayout deleteEmp={this.deleteEmp} searchEmp={this.searchEmp} tableName='Employees' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }

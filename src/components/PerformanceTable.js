@@ -1,48 +1,77 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import axios from 'axios'
 
 import TableLayout from './TableLayout'
 
-function createData(personId, firstName, lastName, startDate, endDate, reason, leaveStatus) {
-  return { personId, firstName, lastName, startDate, endDate, reason, leaveStatus };
+function createData(firstName, lastName, personId, reviewDate, reviewerComments, ratingNo) {
+  return {firstName, lastName, personId, reviewDate, reviewerComments, ratingNo };
 }
 
 const headCells = [
-  { id: 'personId', numeric: true, disablePadding: true, label: 'Person Id' },
-  { id: 'firstName', numeric: false, disablePadding: false, label: 'First Name' },
+  { id: 'firstName', numeric: true, disablePadding: true, label: 'First Name' },
   { id: 'lastName', numeric: false, disablePadding: false, label: 'Last Name' },
-  { id: 'startDate', numeric: false, disablePadding: false, label: 'Start Date' },
-  { id: 'endDate', numeric: false, disablePadding: false, label: 'End Date' },
-  { id: 'reason', numeric: false, disablePadding: false, label: 'Reason' },
-  { id: 'leaveStatus', numeric: false, disablePadding: false, label: 'Leave Status' },
-  { id: '', numeric: false, disablePadding: false, label: ''  },
-  { id: '', numeric: false, disablePadding: false, label: ''  }
+  { id: 'personId', numeric: false, disablePadding: false, label: 'Person ID' },
+  { id: 'reviewDate', numeric: false, disablePadding: false, label: 'Review Date' },
+  { id: 'reviewerComments', numeric: false, disablePadding: false, label: 'Reviewer Comments' },
+  { id: 'ratingNo', numeric: false, disablePadding: false, label: 'Rating No' }
+
 ];
 
 class PerformanceTable extends React.Component {
 
-  state={
-    rows: []
+  constructor(props) {
+    super(props)
+    this.state={
+      rows: [],
+      empRes: [],
+      searchRes: []
+    }
+    this.searchEmp = this.searchEmp.bind(this)
   }
 
   componentDidMount() {
-    this.setState({
-      rows: [
-        createData(1, 'shashank', 'Upadhyay', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(2, 'Yu', 'Wu', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(3, 'Juili', 'pot', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(4, 'Sheetal', 'xyxz', '15th February', '19th February', 'Personal work', 'Pending'),
-      ]
+
+    axios.get('http://localhost:4000/employees').then(res => {
+      let tempRows=[]
+      res.data.data.map(elem => {
+        tempRows.push(createData(elem.F_Name, elem.L_Name, elem.Person_ID, elem.Review_Date, elem.Reviewer_Comments, elem.Rating_No))
+      })
+      this.setState({
+        rows: tempRows,
+        empRes: res.data.data
+      })
+    }).catch(err => {
+      console.log(err);
     })
     console.log(this.state.rows);
+  }
+
+  searchEmp = (event) => {
+    console.log('search: ', event.target.value);
+    if(event.target.value.length > 0) {
+      let selectedEmp = this.state.rows.find(elem => {return elem.personId == event.target.value})
+      if(selectedEmp != undefined) this.setState({
+        searchRes: [selectedEmp],
+        rows: []
+      })
+      console.log(this.state.rows, selectedEmp);
+    } else {
+      let tempRows=[]
+      this.state.empRes.map(elem => {
+        tempRows.push(createData(elem.Person_ID, elem.F_Name, elem.L_Name, elem.Email, elem.Phone_Number, elem.Date_Of_Birth, elem.Department_ID, elem.Employee_Address, elem.Gender, elem.Role_ID, elem.Hire_Date, elem.Reporting_Person_ID, elem.Project_ID, elem.Person_Type))
+      })
+      this.setState({
+        rows: tempRows,
+        searchRes: []
+      })
+    }
   }
 
   render() {
     return(
       <div id='performanceTable'>
-        {
-          this.state.rows.length > 0 ? <TableLayout tableName='Performance Table' rows={this.state.rows} headCells={headCells}/> : <p>loading</p>
-        }
+        <TableLayout searchEmp={this.searchEmp} tableName='Performance Table' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }

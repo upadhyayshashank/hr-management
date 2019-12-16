@@ -1,48 +1,75 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import axios from 'axios'
 
 import TableLayout from './TableLayout'
 
-function createData(personId, firstName, lastName, startDate, endDate, reason, leaveStatus) {
-  return { personId, firstName, lastName, startDate, endDate, reason, leaveStatus };
+function createData(LocationID, HolidayName, Holiday_Date) {
+  return { LocationID, HolidayName, Holiday_Date};
 }
 
 const headCells = [
-  { id: 'personId', numeric: true, disablePadding: true, label: 'Person Id' },
-  { id: 'firstName', numeric: false, disablePadding: false, label: 'First Name' },
-  { id: 'lastName', numeric: false, disablePadding: false, label: 'Last Name' },
-  { id: 'startDate', numeric: false, disablePadding: false, label: 'Start Date' },
-  { id: 'endDate', numeric: false, disablePadding: false, label: 'End Date' },
-  { id: 'reason', numeric: false, disablePadding: false, label: 'Reason' },
-  { id: 'leaveStatus', numeric: false, disablePadding: false, label: 'Leave Status' },
-  { id: '', numeric: false, disablePadding: false, label: ''  },
-  { id: '', numeric: false, disablePadding: false, label: ''  }
+  { id: 'locationID', numeric: true, disablePadding: true, label: 'Location ID' },
+  { id: 'holidayName', numeric: false, disablePadding: false, label: 'Holiday Name' },
+  { id: 'holiday_Date', numeric: false, disablePadding: false, label: 'Holiday_Date' }
+
 ];
 
 class Holidays extends React.Component {
 
-  state={
-    rows: []
+  constructor(props) {
+    super(props)
+    this.state={
+      rows: [],
+      empRes: [],
+      searchRes: []
+    }
+    this.searchEmp = this.searchEmp.bind(this)
   }
 
+
   componentDidMount() {
-    this.setState({
-      rows: [
-        createData(1, 'shashank', 'Upadhyay', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(2, 'Yu', 'Wu', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(3, 'Juili', 'pot', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(4, 'Sheetal', 'xyxz', '15th February', '19th February', 'Personal work', 'Pending'),
-      ]
+
+    axios.get('http://localhost:4000/employees').then(res => {
+      let tempRows=[]
+      res.data.data.map(elem => {
+        tempRows.push(createData(elem.Location_ID, elem.Holiday_Name, elem.Holiday_Date,))
+      })
+      this.setState({
+        rows: tempRows,
+        empRes: res.data.data
+      })
+    }).catch(err => {
+      console.log(err);
     })
     console.log(this.state.rows);
+  }
+
+  searchEmp = (event) => {
+    console.log('search: ', event.target.value);
+    if(event.target.value.length > 0) {
+      let selectedEmp = this.state.rows.find(elem => {return elem.personId == event.target.value})
+      if(selectedEmp != undefined) this.setState({
+        searchRes: [selectedEmp],
+        rows: []
+      })
+      console.log(this.state.rows, selectedEmp);
+    } else {
+      let tempRows=[]
+      this.state.empRes.map(elem => {
+        tempRows.push(createData(elem.Location_ID, elem.Holiday_Name, elem.Holiday_Date))
+      })
+      this.setState({
+        rows: tempRows,
+        searchRes: []
+      })
+    }
   }
 
   render() {
     return(
       <div id='holidays'>
-        {
-          this.state.rows.length > 0 ? <TableLayout tableName='Holidays' rows={this.state.rows} headCells={headCells}/> : <p>loading</p>
-        }
+        <TableLayout searchEmp={this.searchEmp} tableName='Holidays' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }

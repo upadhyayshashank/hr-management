@@ -1,22 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import axios from 'axios'
 
 import TableLayout from './TableLayout'
 
-function createData(personId, firstName, lastName, startDate, endDate, reason, leaveStatus) {
-  return { personId, firstName, lastName, startDate, endDate, reason, leaveStatus };
+function createData(personId, startDate, endDate, roleID, departmentID, fName,lName, Gender, dateOfBirth, phoneNumber) {
+  return { personId, startDate, endDate, roleID, departmentID, fName, lName, Gender, dateOfBirth, phoneNumber };
 }
 
 const headCells = [
   { id: 'personId', numeric: true, disablePadding: true, label: 'Person Id' },
-  { id: 'firstName', numeric: false, disablePadding: false, label: 'First Name' },
-  { id: 'lastName', numeric: false, disablePadding: false, label: 'Last Name' },
   { id: 'startDate', numeric: false, disablePadding: false, label: 'Start Date' },
   { id: 'endDate', numeric: false, disablePadding: false, label: 'End Date' },
-  { id: 'reason', numeric: false, disablePadding: false, label: 'Reason' },
-  { id: 'leaveStatus', numeric: false, disablePadding: false, label: 'Leave Status' },
-  { id: '', numeric: false, disablePadding: false, label: ''  },
-  { id: '', numeric: false, disablePadding: false, label: ''  }
+  { id: 'roleID', numeric: false, disablePadding: false, label: 'Role ID' },
+  { id: 'departmentID', numeric: false, disablePadding: false, label: 'Department ID' },
+  { id: 'fName', numeric: false, disablePadding: false, label: 'F Name' },
+  { id: 'lName', numeric: false, disablePadding: false, label: 'L Name' },
+  { id: 'Gender', numeric: false, disablePadding: false, label: 'Gender'  },
+  { id: 'GendateOfBirthder', numeric: false, disablePadding: false, label: 'Date Of Birth'  },
+  { id: 'phoneNumber', numeric: false, disablePadding: false, label: 'Phone Number'  }
 ];
 
 class WorkHistory extends React.Component {
@@ -26,13 +28,18 @@ class WorkHistory extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      rows: [
-        createData(1, 'shashank', 'Upadhyay', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(2, 'Yu', 'Wu', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(3, 'Juili', 'pot', '15th February', '19th February', 'Personal work', 'Pending'),
-        createData(4, 'Sheetal', 'xyxz', '15th February', '19th February', 'Personal work', 'Pending'),
-      ]
+
+    axios.get('http://localhost:4000/employees').then(res => {
+      let tempRows=[]
+      res.data.data.map(elem => {
+        tempRows.push(createData(elem.Person_ID, elem.Start_Date, elem.End_Date, elem.Role_ID, elem.Department_ID, elem.F_Name, elem.L_Name, elem.Gender, elem.Date_Of_Birth, elem.Phone_Number))
+      })
+      this.setState({
+        rows: tempRows,
+        empRes: res.data.data
+      })
+    }).catch(err => {
+      console.log(err);
     })
     console.log(this.state.rows);
   }

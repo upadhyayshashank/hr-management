@@ -123,7 +123,7 @@ const useToolbarStyles = makeStyles(theme => ({
 const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
-
+console.log('toolbar', props);
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -145,6 +145,7 @@ const EnhancedTableToolbar = props => {
             id="standard-search"
             label="Search field"
             type="search"
+            onChange={(event) => props.searchEmp(event)}
             className={classes.textField}
             margin="normal"
             />
@@ -250,7 +251,7 @@ export default function TableLayout(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar tableName={props.tableName} numSelected={selected.length} />
+        <EnhancedTableToolbar searchEmp={props.searchEmp} tableName={props.tableName} numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Table
             className={classes.table}
@@ -291,7 +292,7 @@ export default function TableLayout(props) {
                         })
                       }
                       {
-                        props.tableName==='Employees'?<TableCell style={{display: 'flex'}} align='right'><EditEmp/> <DeleteEmp/></TableCell>:null
+                        props.tableName==='Employees'?<TableCell style={{display: 'flex'}} align='right'><EditEmp emp={row}/> <DeleteEmp deleteEmp={props.deleteEmp} empId={row.personId}/></TableCell>:null
                       }
                       {
                         props.tableName==='Leave Requests'?<TableCell style={{display: 'flex'}} align='right'><AcceptLeave/> <RejectLeave/></TableCell>:null
