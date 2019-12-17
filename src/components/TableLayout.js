@@ -62,8 +62,7 @@ function EnhancedTableHead(props) {
         {props.headCells.map(headCell => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
+            padding='none'
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -145,7 +144,7 @@ console.log('toolbar', props);
             id="standard-search"
             label="Search field"
             type="search"
-            onChange={(event) => props.searchEmp(event)}
+            onChange={(event) => props.tableName === 'Persons' ? props.searchEmp(event) : props.tableName == 'Salary Table' ? props.getSalary(event.target.value) : props.getInfo(event.target.value)}
             className={classes.textField}
             margin="normal"
             />
@@ -251,7 +250,7 @@ export default function TableLayout(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar searchEmp={props.searchEmp} tableName={props.tableName} numSelected={selected.length} />
+        <EnhancedTableToolbar getInfo={props.getInfo} getSalary = {props.getSalary} searchEmp={props.searchEmp} tableName={props.tableName} numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Table
             className={classes.table}
@@ -274,25 +273,21 @@ export default function TableLayout(props) {
               {stableSort(props.rows, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
                       role="checkbox"
-                      aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
                     >
                       {
                         Object.keys(row).map(elem => {
-                          return <TableCell align="right">{row[elem]}</TableCell>
+                          return <TableCell>{row[elem]}</TableCell>
                         })
                       }
                       {
-                        props.tableName==='Employees'?<TableCell style={{display: 'flex'}} align='right'><EditEmp emp={row} updateEmp={props.updateEmp}/> <DeleteEmp deleteEmp={props.deleteEmp} empId={row.personId}/></TableCell>:null
+                        props.tableName==='Person'?<TableCell style={{display: 'flex'}} align='right'><EditEmp emp={row} updateEmp={props.updateEmp}/> <DeleteEmp deleteEmp={props.deleteEmp} empId={row.personId}/></TableCell>:null
                       }
                       {
                         props.tableName==='Leave Requests'?<TableCell style={{display: 'flex'}} align='right'><AcceptLeave/> <RejectLeave/></TableCell>:null

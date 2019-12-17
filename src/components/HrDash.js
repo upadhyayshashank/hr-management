@@ -9,6 +9,7 @@ import PerformanceTable from './PerformanceTable'
 import SalaryTable from './SalaryTable'
 import WorkHistory from './WorkHistory'
 import Holidays from './Holidays'
+import JobApplication from './JobApplication'
 const styles = theme => ({
   container: {
 
@@ -35,6 +36,8 @@ class HrDash extends React.Component {
         <Projects/>
 
         <LeaveRequest/>
+
+        <JobApplication/>
 
       </div>
     )

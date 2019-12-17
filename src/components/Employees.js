@@ -4,8 +4,8 @@ import AddEmp from './AddEmp'
 import TableLayout from './TableLayout'
 import axios from 'axios'
 
-function createData(personId, firstName, lastName, emailID, phoneNumber,dob,employeeAddress,gender,hireDate,reportingpersonId) {
-  return { personId, firstName, lastName, emailID, phoneNumber,dob,employeeAddress,gender,hireDate,reportingpersonId };
+function createData(personId, firstName, lastName, emailID, phoneNumber,dob,employeeAddress,gender,hireDate) {
+  return { personId, firstName, lastName, emailID, phoneNumber,dob,employeeAddress,gender,hireDate};
 }
 
 const headCells = [
@@ -18,7 +18,6 @@ const headCells = [
   { id: 'employeeAddress', numeric: false, disablePadding: false, label: 'Employee Address' },
   { id: 'gender', numeric: false, disablePadding: false, label: 'Gender' },
   { id: 'hireDate', numeric: false, disablePadding: false, label: 'Hire Date' },
-  { id: 'reportingpersonId', numeric: true, disablePadding: false, label: 'Reporting Person Id' },
   {id: '', numeric: false, disablePadding: false, label: ''}
 ];
 
@@ -43,7 +42,7 @@ class Employees extends React.Component {
     axios.get('http://localhost:4000/employees').then(res => {
       let tempRows=[]
       res.data.data.map(elem => {
-        tempRows.push(createData(elem.Person_ID, elem.F_Name, elem.L_Name, elem.Email, elem.Phone_Number, elem.Date_Of_Birth, elem.Employee_Address, elem.Gender, elem.Hire_Date, elem.Reporting_Person_ID, elem.Person_Type))
+        tempRows.push(createData(elem.Person_ID, elem.F_Name, elem.L_Name, elem.Email, elem.Phone_Number, elem.Date_Of_Birth, elem.Employee_Address, elem.Gender, elem.Hire_Date, elem.Person_Type))
       })
       this.setState({
         rows: tempRows,
@@ -67,7 +66,7 @@ class Employees extends React.Component {
     } else {
       let tempRows=[]
       this.state.empRes.map(elem => {
-        tempRows.push(createData(elem.Person_ID, elem.F_Name, elem.L_Name, elem.Email, elem.Phone_Number, elem.Date_Of_Birth, elem.Employee_Address, elem.Gender, elem.Hire_Date, elem.Reporting_Person_ID, elem.Person_Type))
+        tempRows.push(createData(elem.Person_ID, elem.F_Name, elem.L_Name, elem.Email, elem.Phone_Number, elem.Date_Of_Birth, elem.Employee_Address, elem.Gender, elem.Hire_Date,elem.Person_Type))
       })
       this.setState({
         rows: tempRows,
@@ -114,7 +113,7 @@ class Employees extends React.Component {
     return(
       <div id='employeeTable'>
         <AddEmp addEmp={this.addEmp}/>
-        <TableLayout updateEmp={this.updateEmp} deleteEmp={this.deleteEmp} searchEmp={this.searchEmp} tableName='Employees' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
+        <TableLayout updateEmp={this.updateEmp} deleteEmp={this.deleteEmp} searchEmp={this.searchEmp} tableName='Person' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }

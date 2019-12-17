@@ -76,11 +76,11 @@ function Header(props) {
       <List>
         <ListItem button>
           <ListItemIcon></ListItemIcon>
-          <a href='#employeeTable'><ListItemText primary={'Employee'} /></a>
+          <a href='#employeeTable'><ListItemText primary={'Person'} /></a>
         </ListItem>
         <ListItem button>
           <ListItemIcon></ListItemIcon>
-          <a href='#salaryTable'><ListItemText primary={'Salaries'} /></a>
+          <a href='#salaryTable'><ListItemText primary={'Salary'} /></a>
         </ListItem>
         <ListItem button>
           <ListItemIcon></ListItemIcon>
@@ -96,7 +96,7 @@ function Header(props) {
         </ListItem>
         <ListItem button>
           <ListItemIcon></ListItemIcon>
-          <a href='#workHistory'><ListItemText primary={'Work History'} /></a>
+          <a href='#workHistory'><ListItemText primary={'Job History'} /></a>
         </ListItem>
         <ListItem button>
           <ListItemIcon></ListItemIcon>
@@ -105,6 +105,10 @@ function Header(props) {
         <ListItem button>
           <ListItemIcon></ListItemIcon>
           <a href='#leaveTable'><ListItemText primary={'Leave Requests'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#JobApplication'><ListItemText primary={'Job Application'} /></a>
         </ListItem>
       </List>
     </div>

@@ -29,7 +29,7 @@ class WorkHistory extends React.Component {
 
   componentDidMount() {
 
-    axios.get('http://localhost:4000/employees').then(res => {
+    axios.get('http://localhost:4000/employeesJobHistory').then(res => {
       let tempRows=[]
       res.data.data.map(elem => {
         tempRows.push(createData(elem.Person_ID, elem.Start_Date, elem.End_Date, elem.Role_ID, elem.Department_ID, elem.F_Name, elem.L_Name, elem.Gender, elem.Date_Of_Birth, elem.Phone_Number))
@@ -48,7 +48,7 @@ class WorkHistory extends React.Component {
     return(
       <div id='workHistory'>
         {
-          this.state.rows.length > 0 ? <TableLayout tableName='Work History' rows={this.state.rows} headCells={headCells}/> : <p>loading</p>
+          this.state.rows.length > 0 ? <TableLayout tableName='Job History' rows={this.state.rows} headCells={headCells}/> : <p>loading</p>
         }
       </div>
     )

@@ -30,7 +30,7 @@ class Holidays extends React.Component {
 
   componentDidMount() {
 
-    axios.get('http://localhost:4000/employees').then(res => {
+    axios.get('http://localhost:4000/employeesHoliday').then(res => {
       let tempRows=[]
       res.data.data.map(elem => {
         tempRows.push(createData(elem.Location_ID, elem.Holiday_Name, elem.Holiday_Date,))
@@ -48,7 +48,7 @@ class Holidays extends React.Component {
   searchEmp = (event) => {
     console.log('search: ', event.target.value);
     if(event.target.value.length > 0) {
-      let selectedEmp = this.state.rows.find(elem => {return elem.personId == event.target.value})
+      let selectedEmp = this.state.rows.find(elem => {return elem.locationID == event.target.value})
       if(selectedEmp != undefined) this.setState({
         searchRes: [selectedEmp],
         rows: []

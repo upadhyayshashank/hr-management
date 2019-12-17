@@ -59,7 +59,7 @@ class EditEmp extends React.Component {
       phoneNumber: props.emp.phoneNumber,
       email: props.emp.emailID,
       dob: props.emp.dob,
-      address: props.emp.address,
+      address: props.emp.employeeAddress,
     }
   }
   handleClickOpen = () => {
@@ -93,14 +93,14 @@ class EditEmp extends React.Component {
           <EditIcon/>
         </IconButton>
         <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Add Employee</DialogTitle>
+          <DialogTitle id="form-dialog-title">Update Employee</DialogTitle>
           <DialogContent>
             <form className={classes.form} onSubmit={this.editEmp} autoComplete="off">
               <TextField value={this.state.firstName} onChange={(event) => {this.setState({firstName: event.target.value})}} name='firstName' id="firstName" label="First Name" variant="outlined" />
               <TextField value={this.state.lastName} onChange={(event) => {this.setState({lastName: event.target.value})}} id="lastName" label="Last Name" variant="outlined" />
               <TextField value={this.state.phoneNumber} onChange={(event) => {this.setState({phoneNumber: event.target.value})}} id="phoneNumber" label="Phone Number" variant="outlined" />
               <TextField value={this.state.email} onChange={(event) => {this.setState({email: event.target.value})}} id="emailId" type='email' label="Email Id" variant="outlined" />
-              <TextField disabled value={this.state.dob} id="dob" value={new Date()} type='date' label="DOB" variant="outlined" />
+              <TextField disabled value={this.state.dob} id="dob" value={new Date()} label="DOB" variant="outlined" />
               <br/>
               <TextField value={this.state.address} onChange={(event) => {this.setState({address: event.target.value})}} multiline rows={3} fullWidth id="address" label="Address" variant="outlined" />
             </form>

@@ -18,8 +18,14 @@ const headCells = [
 
 class Projects extends React.Component {
 
-  state={
-    rows: []
+  constructor(props) {
+    super(props)
+    this.state={
+      rows: [],
+      empRes: [],
+      searchRes: []
+    }
+    this.searchEmp = this.searchEmp.bind(this)
   }
 
   componentDidMount() {
@@ -39,13 +45,31 @@ class Projects extends React.Component {
     console.log(this.state.rows);
   }
 
+  searchEmp = (event) => {
+    console.log('search: ', event.target.value);
+    if(event.target.value.length > 0) {
+      let selectedEmp = this.state.rows.find(elem => {return elem.personId == event.target.value})
+      if(selectedEmp != undefined) this.setState({
+        searchRes: [selectedEmp],
+        rows: []
+      })
+      console.log(this.state.rows, selectedEmp);
+    } else {
+      let tempRows=[]
+      this.state.empRes.map(elem => {
+        tempRows.push(createData(elem.Project_ID, elem.Project_Name, elem.Department_ID, elem.Projet_Start_Date, elem.Project_End_Date))
+      })
+      this.setState({
+        rows: tempRows,
+        searchRes: []
+      })
+    }
+  }
 
   render() {
     return(
       <div id='projectTable'>
-        {
-          this.state.rows.length > 0 ? <TableLayout tableName='Projects' rows={this.state.rows} headCells={headCells}/> : <p>loading</p>
-        }
+        <TableLayout searchEmp={this.searchEmp} tableName='Projects' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }

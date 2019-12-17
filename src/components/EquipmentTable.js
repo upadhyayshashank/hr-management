@@ -30,7 +30,7 @@ class EquipmentTable extends React.Component {
 
   componentDidMount() {
 
-    axios.get('http://localhost:4000/employees').then(res => {
+    axios.get('http://localhost:4000/equipmentdetailsall').then(res => {
       let tempRows=[]
       res.data.data.map(elem => {
         tempRows.push(createData(elem.Equipment_ID, elem.Equipment_Name, elem.Person_ID, elem.Equipment_Status))
