@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
+import TextField from '@material-ui/core/TextField';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -61,8 +62,7 @@ function EnhancedTableHead(props) {
         {props.headCells.map(headCell => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'default'}
+            padding='none'
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -99,6 +99,11 @@ const useToolbarStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
   },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    float: 'right'
+  },
   highlight:
     theme.palette.type === 'light'
       ? {
@@ -117,7 +122,7 @@ const useToolbarStyles = makeStyles(theme => ({
 const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles();
   const { numSelected } = props;
-
+console.log('toolbar', props);
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -134,6 +139,15 @@ const EnhancedTableToolbar = props => {
           {
             props.addButton ? props.addButton : null
           }
+          <TextField
+            variant='outlined'
+            id="standard-search"
+            label="Search field"
+            type="search"
+            onChange={(event) => props.searchEmp(event.target.value)}
+            className={classes.textField}
+            margin="normal"
+            />
         </Typography>
       )}
     </Toolbar>
@@ -236,7 +250,7 @@ export default function TableLayout(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar tableName={props.tableName} numSelected={selected.length} />
+        <EnhancedTableToolbar searchEmp={props.searchEmp} tableName={props.tableName} numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Table
             className={classes.table}
@@ -259,25 +273,21 @@ export default function TableLayout(props) {
               {stableSort(props.rows, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
                       role="checkbox"
-                      aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
                     >
                       {
                         Object.keys(row).map(elem => {
-                          return <TableCell align="right">{row[elem]}</TableCell>
+                          return <TableCell>{row[elem]}</TableCell>
                         })
                       }
                       {
-                        props.tableName==='Employees'?<TableCell style={{display: 'flex'}} align='right'><EditEmp/> <DeleteEmp/></TableCell>:null
+                        props.tableName==='Person'?<TableCell style={{display: 'flex'}} align='right'><EditEmp emp={row} updateEmp={props.updateEmp}/> <DeleteEmp deleteEmp={props.deleteEmp} empId={row.personId}/></TableCell>:null
                       }
                       {
                         props.tableName==='Leave Requests'?<TableCell style={{display: 'flex'}} align='right'><AcceptLeave/> <RejectLeave/></TableCell>:null

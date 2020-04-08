@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import axios from 'axios'
 
 import TableLayout from './TableLayout'
 
@@ -17,32 +18,41 @@ const headCells = [
 
 class Projects extends React.Component {
 
-  state={
-    rows: []
+  constructor(props) {
+    super(props)
+    this.state={
+      rows: [],
+      empRes: [],
+      searchRes: []
+    }
+    this.searchEmp = this.searchEmp.bind(this)
   }
 
   componentDidMount() {
-    this.setState({
-      rows: [
-        createData(1, 'SQL', 123, '15th February', '18th November'),
-        createData(2, 'SQL', 124, '11th February', '19th November'),
-        createData(3, 'SQL', 125, '13th February', '11th November'),
-        createData(4, 'SQL', 126, '19th February', '13th November'),
-        createData(5, 'SQL', 127, '12th February', '15th November'),
-        createData(6, 'SQL', 128, '15th February', '16th November'),
-        createData(7, 'SQL', 129, '18th February', '19th November'),
 
-      ]
+    axios.get('http://localhost:4000/employeesProjects').then(res => {
+      let tempRows=[]
+      res.data.data.map(elem => {
+        tempRows.push(createData(elem.Project_ID, elem.Project_Name, elem.Department_ID, elem.Project_Start_Date, elem.Project_End_Date))
+      })
+      this.setState({
+        rows: tempRows,
+        empRes: res.data.data
+      })
+    }).catch(err => {
+      console.log(err);
     })
     console.log(this.state.rows);
+  }
+
+  searchEmp = (event) => {
+    console.log('search: ', event);
   }
 
   render() {
     return(
       <div id='projectTable'>
-        {
-          this.state.rows.length > 0 ? <TableLayout tableName='Projects' rows={this.state.rows} headCells={headCells}/> : <p>loading</p>
-        }
+        <TableLayout searchEmp={this.searchEmp} tableName='Projects' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }

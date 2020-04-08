@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     right: 10
   },
-  
+
 }));
 
 function Header(props) {
@@ -76,6 +76,30 @@ function Header(props) {
       <List>
         <ListItem button>
           <ListItemIcon></ListItemIcon>
+          <a href='#employeeTable'><ListItemText primary={'Person'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#salaryTable'><ListItemText primary={'Salary'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#performanceTable'><ListItemText primary={'Performance Review'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#holidays'><ListItemText primary={'Holidays'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#equipmentTable'><ListItemText primary={'Equipment Details'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
+          <a href='#workHistory'><ListItemText primary={'Job History'} /></a>
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon></ListItemIcon>
           <a href='#projectTable'><ListItemText primary={'Projects'} /></a>
         </ListItem>
         <ListItem button>
@@ -84,7 +108,7 @@ function Header(props) {
         </ListItem>
         <ListItem button>
           <ListItemIcon></ListItemIcon>
-          <a href='#employeeTable'><ListItemText primary={'Employee'} /></a>
+          <a href='#JobApplication'><ListItemText primary={'Job Application'} /></a>
         </ListItem>
       </List>
     </div>
@@ -105,7 +129,7 @@ function Header(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            SRH-Management system
+            SRH Tech Solutions
           </Typography>
           <Button className={classes.logout} variant='contained' color='primay'>Logout</Button>
         </Toolbar>
