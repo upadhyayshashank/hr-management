@@ -30,7 +30,7 @@ class Projects extends React.Component {
 
   componentDidMount() {
 
-    axios.get('http://localhost:4000/employees').then(res => {
+    axios.get('http://localhost:4000/employeesProjects').then(res => {
       let tempRows=[]
       res.data.data.map(elem => {
         tempRows.push(createData(elem.Project_ID, elem.Project_Name, elem.Department_ID, elem.Project_Start_Date, elem.Project_End_Date))
@@ -46,24 +46,7 @@ class Projects extends React.Component {
   }
 
   searchEmp = (event) => {
-    console.log('search: ', event.target.value);
-    if(event.target.value.length > 0) {
-      let selectedEmp = this.state.rows.find(elem => {return elem.personId == event.target.value})
-      if(selectedEmp != undefined) this.setState({
-        searchRes: [selectedEmp],
-        rows: []
-      })
-      console.log(this.state.rows, selectedEmp);
-    } else {
-      let tempRows=[]
-      this.state.empRes.map(elem => {
-        tempRows.push(createData(elem.Project_ID, elem.Project_Name, elem.Department_ID, elem.Projet_Start_Date, elem.Project_End_Date))
-      })
-      this.setState({
-        rows: tempRows,
-        searchRes: []
-      })
-    }
+    console.log('search: ', event);
   }
 
   render() {

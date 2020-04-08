@@ -68,7 +68,7 @@ class Jobapplication extends React.Component {
   render() {
     return(
       <div id='JobApplication'>
-        <TableLayout getInfo={this.getInfo} tableName='Job Application' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
+        <TableLayout searchEmp={this.getInfo} tableName='Job Application' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }

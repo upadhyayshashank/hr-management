@@ -4,20 +4,17 @@ import axios from 'axios'
 
 import TableLayout from './TableLayout'
 
-function createData(personId, numberofDays, startDate, endDate, reason, totalLeaves, leavesAvailed,leaveStaus) {
-  return { personId, numberofDays, startDate, endDate, reason, totalLeaves, leavesAvailed, leaveStaus};
+function createData(personId, totalLeaves, LeaveAvailed, pendingLeaves) {
+  return { personId, totalLeaves, LeaveAvailed, pendingLeaves};
 }
 
 const headCells = [
   { id: 'personId', numeric: true, disablePadding: true, label: 'Person Id' },
-  { id: 'numberofDays', numeric: false, disablePadding: false, label: 'Number Of Days' },
-  { id: 'startDate', numeric: false, disablePadding: false, label: 'Start Date' },
-  { id: 'endDate', numeric: false, disablePadding: false, label: 'End Date' },
-  { id: 'reason', numeric: false, disablePadding: false, label: 'Reason' },
-  { id: 'reason', numeric: false, disablePadding: false, label: 'Total Leaves' },
-  { id: 'totalLeaves', numeric: false, disablePadding: false, label: 'Leaves Availed' },
-  { id: 'leaveStaus', numeric: false, disablePadding: false, label: 'Leave Status'  },
-  { id: '', numeric: false, disablePadding: false, label: ''  }
+  { id: 'totalLeaves', numeric: false, disablePadding: false, label: 'Total Leaves' },
+  { id: 'LeaveAvailed', numeric: false, disablePadding: false, label: 'Leaves Availed' },
+  //{ id: 'salaryDeduction', numeric: false, disablePadding: false, label: 'Salary Deduction' },
+  { id: 'pendingLeaves', numeric: false, disablePadding: false, label: 'Pending Leaves' }
+
 ];
 
 class LeaveRequest extends React.Component {
@@ -34,10 +31,10 @@ class LeaveRequest extends React.Component {
 
   componentDidMount() {
 
-    axios.get('http://localhost:4000/employeesHoliday').then(res => {
+    axios.get('http://localhost:4000/employeesLeaves').then(res => {
       let tempRows=[]
       res.data.data.map(elem => {
-        tempRows.push(createData(elem.Person_ID, elem.Number_Of_Days, elem.Start_Date, elem.Start_Date, elem.End_Date, elem.Reason, elem.Total_Leave, elem.Leaves_Availed, elem.Leave_Status))
+        tempRows.push(createData(elem.Person_ID, elem.Total_Leaves, elem.Leaves_Availed, elem.Pending_Leaves))
       })
       this.setState({
         rows: tempRows,
@@ -50,24 +47,7 @@ class LeaveRequest extends React.Component {
   }
 
   searchEmp = (event) => {
-    console.log('search: ', event.target.value);
-    if(event.target.value.length > 0) {
-      let selectedEmp = this.state.rows.find(elem => {return elem.personId == event.target.value})
-      if(selectedEmp != undefined) this.setState({
-        searchRes: [selectedEmp],
-        rows: []
-      })
-      console.log(this.state.rows, selectedEmp);
-    } else {
-      let tempRows=[]
-      this.state.empRes.map(elem => {
-        tempRows.push(createData(elem.Person_ID, elem.Number_Of_Days, elem.Start_Date, elem.Start_Date, elem.End_Date, elem.Reason, elem.Total_Leave, elem.Leaves_Availed, elem.Leave_Status))
-      })
-      this.setState({
-        rows: tempRows,
-        searchRes: []
-      })
-    }
+    console.log('search: ', event);
   }
 
 

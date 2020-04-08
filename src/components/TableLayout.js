@@ -144,7 +144,7 @@ console.log('toolbar', props);
             id="standard-search"
             label="Search field"
             type="search"
-            onChange={(event) => props.tableName === 'Persons' ? props.searchEmp(event) : props.tableName == 'Salary Table' ? props.getSalary(event.target.value) : props.getInfo(event.target.value)}
+            onChange={(event) => props.searchEmp(event.target.value)}
             className={classes.textField}
             margin="normal"
             />
@@ -250,7 +250,7 @@ export default function TableLayout(props) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar getInfo={props.getInfo} getSalary = {props.getSalary} searchEmp={props.searchEmp} tableName={props.tableName} numSelected={selected.length} />
+        <EnhancedTableToolbar searchEmp={props.searchEmp} tableName={props.tableName} numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Table
             className={classes.table}

@@ -24,7 +24,9 @@ const headCells = [
 class WorkHistory extends React.Component {
 
   state={
-    rows: []
+    rows: [],
+    searchRes: [],
+    empRes: []
   }
 
   componentDidMount() {
@@ -44,12 +46,30 @@ class WorkHistory extends React.Component {
     console.log(this.state.rows);
   }
 
+  searchEmp = (id) => {
+    if(id.length > 0) {
+      let selectedEmp = this.state.rows.find(elem => {return elem.personId == id})
+      if(selectedEmp != undefined) this.setState({
+        searchRes: [selectedEmp],
+        rows: []
+      })
+      console.log(this.state.rows, selectedEmp);
+    } else {
+      let tempRows=[]
+      this.state.empRes.map(elem => {
+        tempRows.push(createData(elem.Person_ID, elem.Start_Date, elem.End_Date, elem.Role_ID, elem.Department_ID, elem.F_Name, elem.L_Name, elem.Gender, elem.Date_Of_Birth, elem.Phone_Number))
+      })
+      this.setState({
+        rows: tempRows,
+        searchRes: []
+      })
+    }
+  }
+
   render() {
     return(
       <div id='workHistory'>
-        {
-          this.state.rows.length > 0 ? <TableLayout tableName='Job History' rows={this.state.rows} headCells={headCells}/> : <p>loading</p>
-        }
+        <TableLayout  searchEmp={this.searchEmp} tableName='Job History' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/> : <p>loading</p>
       </div>
     )
   }

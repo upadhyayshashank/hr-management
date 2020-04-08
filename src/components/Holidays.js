@@ -46,24 +46,7 @@ class Holidays extends React.Component {
   }
 
   searchEmp = (event) => {
-    console.log('search: ', event.target.value);
-    if(event.target.value.length > 0) {
-      let selectedEmp = this.state.rows.find(elem => {return elem.locationID == event.target.value})
-      if(selectedEmp != undefined) this.setState({
-        searchRes: [selectedEmp],
-        rows: []
-      })
-      console.log(this.state.rows, selectedEmp);
-    } else {
-      let tempRows=[]
-      this.state.empRes.map(elem => {
-        tempRows.push(createData(elem.Location_ID, elem.Holiday_Name, elem.Holiday_Date))
-      })
-      this.setState({
-        rows: tempRows,
-        searchRes: []
-      })
-    }
+    console.log('search: ', event);
   }
 
   render() {

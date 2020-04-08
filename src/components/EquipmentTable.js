@@ -46,24 +46,7 @@ class EquipmentTable extends React.Component {
   }
 
   searchEmp = (event) => {
-    console.log('search: ', event.target.value);
-    if(event.target.value.length > 0) {
-      let selectedEmp = this.state.rows.find(elem => {return elem.PersonID == event.target.value})
-      if(selectedEmp != undefined) this.setState({
-        searchRes: [selectedEmp],
-        rows: []
-      })
-      console.log(this.state.rows, selectedEmp);
-    } else {
-      let tempRows=[]
-      this.state.empRes.map(elem => {
-        tempRows.push(createData(elem.Equipment_ID, elem.Equipment_Name, elem.Person_ID, elem.Equipment_Status))
-      })
-      this.setState({
-        rows: tempRows,
-        searchRes: []
-      })
-    }
+    console.log('search: ', event);
   }
 
 

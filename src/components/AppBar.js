@@ -129,7 +129,7 @@ function Header(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            SRH-Management system
+            SRH Tech Solutions
           </Typography>
           <Button className={classes.logout} variant='contained' color='primay'>Logout</Button>
         </Toolbar>

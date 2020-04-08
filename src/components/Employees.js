@@ -54,10 +54,9 @@ class Employees extends React.Component {
     console.log(this.state.rows);
   }
 
-  searchEmp = (event) => {
-    console.log('search: ', event.target.value);
-    if(event.target.value.length > 0) {
-      let selectedEmp = this.state.rows.find(elem => {return elem.personId == event.target.value})
+  searchEmp = (id) => {
+    if(id.length > 0) {
+      let selectedEmp = this.state.rows.find(elem => {return elem.personId == id})
       if(selectedEmp != undefined) this.setState({
         searchRes: [selectedEmp],
         rows: []

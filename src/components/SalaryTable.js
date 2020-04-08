@@ -10,8 +10,8 @@ function createData(Person_ID, Annual_Salary, Benifits, Rating_No,Final_Salary) 
 
 const headCells = [
   { id: 'Person_ID', numeric: true, disablePadding: true, label: 'Person ID' },
-  { id: 'Annual_Salary', numeric: false, disablePadding: false, label: 'Monthly Salary' },
-  { id: 'Benefits', numeric: false, disablePadding: false, label: 'Benifits' },
+  { id: 'Annual_Salary', numeric: false, disablePadding: false, label: 'Annual Salary' },
+  { id: 'Benefits', numeric: false, disablePadding: false, label: 'Benefits' },
   { id: 'Rating_No', numeric: false, disablePadding: false, label: 'Rating No' },
   { id: 'Final_Salary', numeric: true, disablePadding: false, label: 'Final Salary' },
 
@@ -66,7 +66,7 @@ class SalaryTable extends React.Component {
   render() {
     return(
       <div id='salaryTable'>
-        <TableLayout getSalary={this.getSalary} tableName='Salary Table' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
+        <TableLayout searchEmp={this.getSalary} tableName='Salary Table' rows={this.state.searchRes.length > 0 ? this.state.searchRes : this.state.rows} headCells={headCells}/>
       </div>
     )
   }
